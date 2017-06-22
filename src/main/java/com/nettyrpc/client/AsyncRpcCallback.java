@@ -5,8 +5,9 @@ package com.nettyrpc.client;
  * @Created by Johnny Chou on 2017/5/26.
  * @Author：
  */
-public class AsyncRpcCallback {
-
+public interface AsyncRpcCallback {
+    void success(Object result);
+    void fail(Exception e);
 
 
 }
