@@ -1,6 +1,7 @@
 package com.nettyrpc.client.proxy;
 
-import com.nettyrpc.client.RpcFuture;
+
+import com.nettyrpc.client.RPCFuture;
 
 /**
  * @Description:
@@ -8,6 +9,6 @@ import com.nettyrpc.client.RpcFuture;
  * @Author：
  */
 public interface IAsyncObjectProxy {
-    public RpcFuture rpcCall(String fullname,Object...args);
+    public RPCFuture call(String funcName, Object... args);
 
 }
