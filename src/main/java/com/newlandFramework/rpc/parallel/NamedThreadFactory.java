@@ -32,11 +32,19 @@ public class NamedThreadFactory implements ThreadFactory {
         this.prefix = StringUtils.isEmpty(prefix) ? prefix + "-thread-":"";
         daemoThread = damoe;
         SecurityManager securityManager = System.getSecurityManager();
-
+        threadGroup = (securityManager == null) ? Thread.currentThread().getThreadGroup() : securityManager.getThreadGroup();
     }
+
+    public ThreadGroup getThreadGroup() {
+        return this.threadGroup;
+    }
+
 
     @Override
     public Thread newThread(Runnable r) {
-        return null;
+        String name = prefix + mthreadNumber.getAndIncrement();
+        Thread thread = new Thread(threadGroup,r,name,0);
+        thread.setDaemon(daemoThread);
+        return thread;
     }
 }
