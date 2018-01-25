@@ -1,14 +1,11 @@
 package com.newlandFramework.rpc.netty;
 
-import com.google.common.util.concurrent.ListeningExecutorService;
-import com.google.common.util.concurrent.MoreExecutors;
 import com.newlandFramework.rpc.core.RpcSystemConfig;
-import com.newlandFramework.rpc.parallel.RpcThreadPool;
 import com.newlandFramework.rpc.serialize.RpcSerializeProtocol;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 
-import java.util.concurrent.ThreadPoolExecutor;
+import java.net.InetSocketAddress;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -27,7 +24,7 @@ public class RpcServerLoader {
     private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(parallel);
     private static int threadNums = RpcSystemConfig.SYSTEM_PROPERTY_THREADPOOL_THREAD_NUMS;
     private static int queueNums = RpcSystemConfig.SYSTEM_PROPERTY_THREADPOOL_QUEUE_NUMS;
-    private static ListeningExecutorService threadPoolExecutor = MoreExecutors.listeningDecorator((ThreadPoolExecutor) RpcThreadPool.getExecutor(threadNums, queueNums));
+    //private static ListeningExecutorService threadPoolExecutor = MoreExecutors.listeningDecorator((ThreadPoolExecutor) RpcThreadPool.getExecutor(threadNums, queueNums));
     private MessageSendHandler messageSendHandler = null;
     private Lock lock = new ReentrantLock();
     private Condition connectStatus = lock.newCondition();
@@ -50,6 +47,18 @@ public class RpcServerLoader {
 
     public void setSerializeProtocol(RpcSerializeProtocol serializeProtocol) {
         this.serializeProtocol = serializeProtocol;
+    }
+
+    public void load(String serverAddress, RpcSerializeProtocol rpcSerializeProtocol){
+        String[] ipAddres = serverAddress.split(RpcServerLoader.DELIMITER);
+        if (ipAddres.length == 2){
+            String host = ipAddres[0];
+            int port = Integer.parseInt(ipAddres[1]);
+            final InetSocketAddress socketAddress = new InetSocketAddress(host,port);
+            System.out.printf("[author voyager_2511] Netty RPC Client start success!\nip:%s\nport:%d\nprotocol:%s\n\n", host, port, serializeProtocol);
+
+
+        }
     }
 
 }

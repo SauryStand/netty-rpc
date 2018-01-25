@@ -1,5 +1,7 @@
 package com.newlandFramework.rpc.netty;
 
+import com.newlandFramework.rpc.serialize.RpcSerializeProtocol;
+
 /**
  * @Description:
  * @Created by Johnny Chou on 2017/10/13.
@@ -16,7 +18,12 @@ public class MessageSendExecutor {
 
     private RpcServerLoader loader = RpcServerLoader.getInstance();
 
+    public MessageSendExecutor() {
+        //empty constructor
+    }
 
-
+    public MessageSendExecutor(String serverAddress, RpcSerializeProtocol rpcSerializeProtocol){
+        loader.load(serverAddress,rpcSerializeProtocol);
+    }
 
 }
